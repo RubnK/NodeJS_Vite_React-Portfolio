@@ -6,6 +6,7 @@ import stackColors from "../utils/stackColors";
 type Image = {
   id: number;
   filename: string;
+  title?: string;
 };
 
 export default function ProjectDetail() {
@@ -61,12 +62,18 @@ export default function ProjectDetail() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {images.map((img) => (
-          <img
-            key={img.id}
-            src={`http://localhost:3001/uploads/projects/${img.filename}`}
-            alt={`Illustration ${project.title}`}
-            className="w-full h-48 object-cover rounded shadow"
-          />
+          <div key={img.id}>
+            <img
+              src={`http://localhost:3001/uploads/projects/${img.filename}`}
+              alt={img.title || project.title}
+              className="w-full h-48 object-cover rounded shadow"
+            />
+            {img.title && (
+              <p className="text-sm text-center mt-2 text-gray-700">
+                {img.title}
+              </p>
+            )}
+          </div>
         ))}
       </div>
     </div>
