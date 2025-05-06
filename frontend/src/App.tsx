@@ -4,6 +4,7 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Photos from './pages/Photos';
 import Cv from './pages/Cv';
+import ProjectDetail from './pages/ProjectDetail';
 import Navbar from './components/Navbar';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/projets" element={<Projects />} />
         <Route path="/photos" element={<Photos />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/projets/:id" element={<ProjectDetail />} />
       </Routes>
       </div>
     </Router>
