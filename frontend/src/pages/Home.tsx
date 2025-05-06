@@ -1,12 +1,181 @@
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FiArrowRight } from "react-icons/fi";
+
 export default function Home() {
+  const [thumbnails, setThumbnails] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/photos")
+      .then((res) => res.json())
+      .then((data) => {
+        const thumbs = data
+          .slice(0, 3)
+          .map(
+            (p: any) => `http://localhost:3001/uploads/photos/${p.filename}`
+          );
+        setThumbnails(thumbs);
+      })
+      .catch(console.error);
+  }, []);
+
+  // Variants pour les animations
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
-    <div className="p-8 text-center">
-      <h1 className="text-4xl font-bold text-blue-600">
-        Bienvenue sur mon portfolio
-      </h1>
-      <p className="mt-4 text-lg text-gray-700">
-        Je suis développeur & photographe.
-      </p>
-    </div>
+    <motion.div
+      initial="hidden"
+      animate="show"
+      variants={container}
+      className="pt-24 px-6 max-w-6xl mx-auto space-y-20 text-gray-100"
+    >
+      {/* Introduction */}
+      <motion.section variants={item}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent leading-[1.3]">
+          Bienvenue, je suis Ruben
+        </h1>
+        <p className="text-xl text-gray-300 max-w-3xl">
+          Étudiant en développement web à l'EFREI, passionné par la création,
+          l'écriture et la photographie.
+        </p>
+      </motion.section>
+
+      {/* Call to action */}
+      <motion.section variants={item} className="flex flex-wrap gap-6">
+        <motion.div whileHover="hover">
+          <Link
+            to="/cv"
+            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all flex items-center gap-2 hover:shadow-cyan-500/20 relative overflow-hidden"
+          >
+            <motion.span
+              variants={{
+                hover: { x: 5 },
+              }}
+              transition={{ type: "spring", stiffness: 400 }}
+              className="flex items-center gap-2"
+            >
+              Voir mon CV <FiArrowRight />
+            </motion.span>
+            <motion.div
+              className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"
+              variants={{
+                hover: { opacity: 0.1 },
+              }}
+            />
+          </Link>
+        </motion.div>
+
+        <motion.div whileHover="hover">
+          <Link
+            to="/projets"
+            className="px-8 py-4 border-2 border-cyan-400 text-cyan-400 rounded-lg hover:bg-gray-800/50 transition-all flex items-center gap-2 relative overflow-hidden"
+          >
+            <motion.span
+              variants={{
+                hover: { x: 5 },
+              }}
+              transition={{ type: "spring", stiffness: 400 }}
+              className="flex items-center gap-2"
+            >
+              Découvrir mes projets <FiArrowRight />
+            </motion.span>
+            <motion.div
+              className="absolute inset-0 bg-cyan-400/10 opacity-0 hover:opacity-100 transition-opacity"
+              variants={{
+                hover: { opacity: 0.1 },
+              }}
+            />
+          </Link>
+        </motion.div>
+      </motion.section>
+
+      {/* Section à propos */}
+      <motion.section
+        variants={item}
+        className="bg-gray-800/50 p-8 rounded-xl backdrop-blur-sm"
+      >
+        <h2 className="text-3xl font-semibold mb-4 text-cyan-400">
+          À propos de moi
+        </h2>
+        <div className="prose prose-invert max-w-none">
+          <p>
+            Je m'investis dans des projets à fort impact humain, que ce soit en
+            tant que développeur ou bénévole. Ce portfolio rassemble mes
+            travaux, expériences et engagements.
+          </p>
+          <p>
+            Mon approche combine rigueur technique et sensibilité artistique,
+            avec une attention particulière pour l'expérience utilisateur.
+          </p>
+        </div>
+      </motion.section>
+
+      {/* Section photos */}
+      <motion.section variants={item}>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-semibold text-cyan-400">
+            Quelques photos
+          </h2>
+          <Link
+            to="/photos"
+            className="flex items-center gap-1 text-cyan-400 hover:underline"
+          >
+            Voir la galerie <FiArrowRight />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {thumbnails.map((src, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -5 }}
+              className="relative w-full pb-[100%] rounded-xl shadow-lg overflow-hidden group border border-gray-700"
+            >
+              <img
+                src={src}
+                alt={`Aperçu photo ${i + 1}`}
+                className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Section contact */}
+      <motion.section
+        variants={item}
+        className="bg-gray-800/50 p-8 rounded-xl backdrop-blur-sm"
+      >
+        <h2 className="text-3xl font-semibold mb-4 text-cyan-400">
+          Envie de me contacter ?
+        </h2>
+        <p className="text-lg text-gray-300 mb-6 max-w-2xl">
+          Je suis ouvert aux opportunités de collaboration, de stage ou
+          d'alternance. N'hésitez pas à me contacter pour discuter de votre
+          projet.
+        </p>
+        <Link
+          to="/contact"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
+        >
+          <span>Me contacter</span>
+          <FiArrowRight />
+        </Link>
+      </motion.section>
+    </motion.div>
   );
 }
