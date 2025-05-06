@@ -16,12 +16,19 @@ CREATE TABLE contacts (
   sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE photo_categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) UNIQUE NOT NULL
+);
+
 CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
   description TEXT,
   filename TEXT NOT NULL,
-  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  location VARCHAR(100),
+  category_id INTEGER REFERENCES photo_categories(id) ON DELETE SET NULL,
+  took_at TIMESTAMP
 );
 
 CREATE TABLE project_images (
@@ -30,4 +37,10 @@ CREATE TABLE project_images (
   filename TEXT NOT NULL,
   title VARCHAR(100),
   uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE photo_category_links (
+  photo_id INTEGER REFERENCES photos(id) ON DELETE CASCADE,
+  category_id INTEGER REFERENCES photo_categories(id) ON DELETE CASCADE,
+  PRIMARY KEY (photo_id, category_id)
 );
