@@ -29,7 +29,7 @@ export default function ProjectDetail() {
   if (!project) return <div className="pt-20 px-6">Chargement...</div>;
 
   return (
-    <div className="pt-20 px-6 max-w-5xl mx-auto">
+    <div className="pt-30 px-6 max-w-5xl mx-auto">
       <h1 className="text-4xl font-bold mb-4 text-blue-700">{project.title}</h1>
       <p className="text-gray-700 mb-6">{project.description}</p>
 

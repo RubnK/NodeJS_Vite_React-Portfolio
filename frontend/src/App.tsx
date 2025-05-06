@@ -11,7 +11,6 @@ export default function App() {
   return (
     <Router>
       <Navbar />
-      <div className="pt-20 px-6">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cv" element={<Cv />} />
@@ -20,7 +19,6 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/projets/:id" element={<ProjectDetail />} />
       </Routes>
-      </div>
     </Router>
   );
 }

@@ -28,7 +28,7 @@ export default function Photos() {
   }, []);
 
   return (
-    <div className="pt-20 px-6 max-w-6xl mx-auto">
+    <div className="pt-30 px-6 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-8">Mes photos</h1>
 
       {loading && <p>Chargement...</p>}
