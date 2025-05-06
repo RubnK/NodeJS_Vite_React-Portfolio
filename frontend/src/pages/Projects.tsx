@@ -115,9 +115,8 @@ export default function Projects() {
                       className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700"
                     >
                       <span
-                        className={`w-2 h-2 rounded-full ${
-                          stackColors[tech] || "bg-gray-400"
-                        }`}
+                        className="w-3 h-3 rounded-full mr-2"
+                        style={{ backgroundColor: stackColors[tech] || "#ccc" }}
                       />
                       {tech}
                     </span>
