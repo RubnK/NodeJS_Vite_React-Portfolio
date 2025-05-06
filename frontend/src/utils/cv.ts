@@ -9,15 +9,15 @@ export const cv = {
     email: "contact@rubnk.com",
     phone: "+33 6 51 68 99 01",
     city: "Paris & Périphérie",
-    linkedin: "/ruben-k1",
-    github: "github.com/rubnk",
+    linkedin: "https://linkedin.com/in/ruben-k1",
+    github: "https://github.com/RubnK",
   },
 
   skills: {
     frontend: ["HTML", "CSS", "JavaScript", "Three.JS", "Alpine.JS", "Vue.JS"],
     backend: ["PHP", "Symfony", "Composer", "Node.JS", "API REST"],
     database: ["MySQL", "PostgreSQL", "MongoDB"],
-    software: ["Python", "C", "Bash", "Java", "Android"],
+    software: ["Python", "C", "Shell", "Java", "Android"],
     infra: ["Apache", "UNIX"],
     security_versioning: ["OWASP", "Git", "Docker", "CI/CD", "Kubernetes"],
     languages: ["Anglais (courant)"],
