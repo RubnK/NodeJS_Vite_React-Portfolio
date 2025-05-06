@@ -1,13 +1,34 @@
 const stackColors: Record<string, string> = {
-    React: 'bg-blue-500',
-    'Node.js': 'bg-green-600',
-    PostgreSQL: 'bg-indigo-700',
-    TypeScript: 'bg-blue-700',
-    JavaScript: 'bg-yellow-400',
-    Express: 'bg-gray-800',
-    Tailwind: 'bg-teal-500',
-    Firebase: 'bg-orange-500',
-  };
-  
-  export default stackColors;
-  
+  React: "#61dafb",
+  "Node.JS": "#73a760",
+  PostgreSQL: "#376695",
+  TypeScript: "#377cc8",
+  JavaScript: "#f7e025",
+  Express: "#f1c617",
+  Python: "#ffd448",
+  Docker: "#2568ef",
+  CSS: "#0e7dc2",
+  HTML: "#e44d26",
+  PHP: "#787cb4",
+  Symfony: "#000000",
+  MySQL: "#dd8a00",
+  MongoDB: "#00ed64",
+  Java: "#e93631",
+  C: "#0b5d9e",
+  Bash: "#444d50",
+  Git: "#f05539",
+  UNIX: "#1c6434",
+  Apache: "#aa0000",
+  Android: "#43dd88",
+  "Vue.JS": "#08bf86",
+  "Alpine.JS": "#7bc3d3",
+  "Three.JS": "#000000",
+  Composer: "#8c5b37",
+  Kubernetes: "#2d6be6",
+  OWASP: "#6361a8",
+  "Anglais (courant)": "#000000",
+  "API REST": "#000000",
+  "CI/CD": "#000000",
+};
+
+export default stackColors;
