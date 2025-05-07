@@ -18,7 +18,7 @@ export default function Photos() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch("api.rubnk.com/photos")
+    fetch("https://api.rubnk.com/photos")
       .then((res) => res.json())
       .then((data) => {
         setPhotos(data);

@@ -1,7 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiGithub, FiExternalLink, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiGithub,
+  FiExternalLink,
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import type { Project } from "../types/Project";
 import stackColors from "../utils/stackColors";
 
@@ -23,8 +29,8 @@ export default function ProjectDetail() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch(`api.rubnk.com/projects/${id}`).then((res) => res.json()),
-      fetch(`api.rubnk.com/projects/${id}/images`).then((res) => res.json())
+      fetch(`https://api.rubnk.com/projects/${id}`).then((res) => res.json()),
+      fetch(`https://api.rubnk.com/projects/${id}/images`).then((res) => res.json()),
     ])
       .then(([projectData, imagesData]) => {
         setProject(projectData);
@@ -40,42 +46,48 @@ export default function ProjectDetail() {
       if (!selectedImage) return;
 
       switch (e.key) {
-        case 'Escape':
+        case "Escape":
           setSelectedImage(null);
           break;
-        case 'ArrowLeft':
-          handleNavigation('prev');
+        case "ArrowLeft":
+          handleNavigation("prev");
           break;
-        case 'ArrowRight':
-          handleNavigation('next');
+        case "ArrowRight":
+          handleNavigation("next");
           break;
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentIndex, images]);
 
   // Navigation dans la lightbox
-  const handleNavigation = useCallback((direction: 'prev' | 'next') => {
-    let newIndex;
-    if (direction === 'prev') {
-      newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-    } else {
-      newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-    }
-    setCurrentIndex(newIndex);
-    setSelectedImage(images[newIndex]);
-  }, [currentIndex, images]);
+  const handleNavigation = useCallback(
+    (direction: "prev" | "next") => {
+      let newIndex;
+      if (direction === "prev") {
+        newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+      } else {
+        newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+      }
+      setCurrentIndex(newIndex);
+      setSelectedImage(images[newIndex]);
+    },
+    [currentIndex, images]
+  );
 
   // Gestion du swipe
-  const handleSwipe = useCallback((swipeDirection: 'left' | 'right') => {
-    if (swipeDirection === 'left') {
-      handleNavigation('next');
-    } else {
-      handleNavigation('prev');
-    }
-  }, [handleNavigation]);
+  const handleSwipe = useCallback(
+    (swipeDirection: "left" | "right") => {
+      if (swipeDirection === "left") {
+        handleNavigation("next");
+      } else {
+        handleNavigation("prev");
+      }
+    },
+    [handleNavigation]
+  );
 
   // Ouverture de la lightbox
   const openLightbox = (img: Image, index: number) => {
@@ -91,7 +103,8 @@ export default function ProjectDetail() {
     );
   }
 
-  if (!project) return <div className="pt-20 px-6 text-gray-300">Projet non trouvé</div>;
+  if (!project)
+    return <div className="pt-20 px-6 text-gray-300">Projet non trouvé</div>;
 
   return (
     <motion.div
@@ -125,7 +138,9 @@ export default function ProjectDetail() {
             transition={{ delay: 0.4 }}
             className="mb-8"
           >
-            <h2 className="text-2xl font-semibold mb-4 text-cyan-400">Technologies</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
+              Technologies
+            </h2>
             <div className="flex flex-wrap gap-3">
               {project.stack.map((tech, i) => (
                 <motion.span
@@ -153,7 +168,9 @@ export default function ProjectDetail() {
               transition={{ delay: 0.6 }}
               className="mb-8"
             >
-              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">Détails du projet</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
+                Détails du projet
+              </h2>
               <div className="prose prose-invert max-w-none">
                 {project.description}
               </div>
@@ -170,7 +187,9 @@ export default function ProjectDetail() {
               transition={{ delay: 0.8 }}
               className="mb-8"
             >
-              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">Liens</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
+                Liens
+              </h2>
               <a
                 href={project.link}
                 target="_blank"
@@ -227,7 +246,7 @@ export default function ProjectDetail() {
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
-            <button 
+            <button
               className="absolute top-4 right-4 text-white text-3xl z-50"
               onClick={(e) => {
                 e.stopPropagation();
@@ -242,7 +261,7 @@ export default function ProjectDetail() {
               className="absolute left-4 text-white text-3xl p-2 z-50"
               onClick={(e) => {
                 e.stopPropagation();
-                handleNavigation('prev');
+                handleNavigation("prev");
               }}
               aria-label="Image précédente"
             >
@@ -255,9 +274,9 @@ export default function ProjectDetail() {
               dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={(_, info) => {
                 if (info.offset.x > 50) {
-                  handleSwipe('right');
+                  handleSwipe("right");
                 } else if (info.offset.x < -50) {
-                  handleSwipe('left');
+                  handleSwipe("left");
                 }
               }}
               onClick={(e) => e.stopPropagation()}
@@ -283,7 +302,7 @@ export default function ProjectDetail() {
               className="absolute right-4 text-white text-3xl p-2 z-50"
               onClick={(e) => {
                 e.stopPropagation();
-                handleNavigation('next');
+                handleNavigation("next");
               }}
               aria-label="Image suivante"
             >
@@ -295,7 +314,9 @@ export default function ProjectDetail() {
               {images.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2 h-2 rounded-full ${currentIndex === index ? 'bg-cyan-400' : 'bg-gray-500'}`}
+                  className={`w-2 h-2 rounded-full ${
+                    currentIndex === index ? "bg-cyan-400" : "bg-gray-500"
+                  }`}
                 />
               ))}
             </div>

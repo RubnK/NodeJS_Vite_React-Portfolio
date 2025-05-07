@@ -7,7 +7,7 @@ export default function Home() {
   const [thumbnails, setThumbnails] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("api.rubnk.com/photos")
+    fetch("https://api.rubnk.com/photos")
       .then((res) => res.json())
       .then((data) => {
         const thumbs = data
