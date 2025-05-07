@@ -25,8 +25,6 @@ export default function AdminPanel() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const correctPassword = "superadmin";
-
   useEffect(() => {
     if (authenticated) {
       fetchContacts();
@@ -36,7 +34,7 @@ export default function AdminPanel() {
 
   const fetchContacts = async () => {
     try {
-      const res = await fetch("http://localhost:3001/contact");
+      const res = await fetch("/api/contact");
       const data = await res.json();
       setContacts(data);
     } catch (err) {
@@ -49,7 +47,7 @@ export default function AdminPanel() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("http://localhost:3001/categories");
+      const res = await fetch("/api/categories");
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -57,9 +55,15 @@ export default function AdminPanel() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === correctPassword) {
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (res.ok) {
       setAuthenticated(true);
     } else {
       setNotification("Mot de passe incorrect");
@@ -100,7 +104,10 @@ export default function AdminPanel() {
           )}
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Mot de passe
               </label>
               <input
@@ -139,24 +146,59 @@ export default function AdminPanel() {
 
           <div className="border-b border-gray-200">
             <nav className="flex -mb-px">
-              <button onClick={() => setActiveTab("messages")} className={`px-4 py-3 text-sm font-medium ${activeTab === "messages" ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Messages</button>
-              <button onClick={() => setActiveTab("projects")} className={`px-4 py-3 text-sm font-medium ${activeTab === "projects" ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Projets</button>
-              <button onClick={() => setActiveTab("photos")} className={`px-4 py-3 text-sm font-medium ${activeTab === "photos" ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Photos</button>
+              <button
+                onClick={() => setActiveTab("messages")}
+                className={`px-4 py-3 text-sm font-medium ${
+                  activeTab === "messages"
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Messages
+              </button>
+              <button
+                onClick={() => setActiveTab("projects")}
+                className={`px-4 py-3 text-sm font-medium ${
+                  activeTab === "projects"
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Projets
+              </button>
+              <button
+                onClick={() => setActiveTab("photos")}
+                className={`px-4 py-3 text-sm font-medium ${
+                  activeTab === "photos"
+                    ? "border-b-2 border-blue-500 text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Photos
+              </button>
             </nav>
           </div>
 
-          {notification && <div className="p-4 bg-green-100 text-green-700 border-l-4 border-green-500">{notification}</div>}
+          {notification && (
+            <div className="p-4 bg-green-100 text-green-700 border-l-4 border-green-500">
+              {notification}
+            </div>
+          )}
 
           <div className="p-6">
             {activeTab === "messages" && (
               <section>
-                <h2 className="text-xl font-semibold mb-6 text-gray-800">Messages reçus</h2>
+                <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                  Messages reçus
+                </h2>
                 {loading ? (
                   <div className="flex justify-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                   </div>
                 ) : contacts.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">Aucun message trouvé.</p>
+                  <p className="text-gray-500 text-center py-8">
+                    Aucun message trouvé.
+                  </p>
                 ) : (
                   <div className="space-y-4">
                     {contacts.map((contact) => (
@@ -168,8 +210,13 @@ export default function AdminPanel() {
                       >
                         <div className="flex justify-between items-start">
                           <div>
-                            <p className="font-semibold text-lg">{contact.name}</p>
-                            <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">
+                            <p className="font-semibold text-lg">
+                              {contact.name}
+                            </p>
+                            <a
+                              href={`mailto:${contact.email}`}
+                              className="text-blue-600 hover:underline"
+                            >
                               {contact.email}
                             </a>
                           </div>
@@ -177,7 +224,9 @@ export default function AdminPanel() {
                             {new Date(contact.sent_at).toLocaleString("fr-FR")}
                           </span>
                         </div>
-                        <p className="mt-3 text-gray-700 whitespace-pre-line">{contact.message}</p>
+                        <p className="mt-3 text-gray-700 whitespace-pre-line">
+                          {contact.message}
+                        </p>
                       </motion.div>
                     ))}
                   </div>
@@ -187,25 +236,68 @@ export default function AdminPanel() {
 
             {activeTab === "projects" && (
               <section>
-                <h2 className="text-xl font-semibold mb-6 text-gray-800">Ajouter un projet</h2>
+                <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                  Ajouter un projet
+                </h2>
                 <form onSubmit={handleAddProject} className="space-y-4">
-                  <input type="text" placeholder="Titre" className="w-full border px-4 py-2 rounded" required />
-                  <textarea placeholder="Description" className="w-full border px-4 py-2 rounded" required />
-                  <input type="text" placeholder="Technos (React, Node...)" className="w-full border px-4 py-2 rounded" required />
-                  <input type="url" placeholder="Lien (optionnel)" className="w-full border px-4 py-2 rounded" />
-                  <input type="file" multiple className="w-full border px-4 py-2 rounded" />
-                  <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Ajouter</button>
+                  <input
+                    type="text"
+                    placeholder="Titre"
+                    className="w-full border px-4 py-2 rounded"
+                    required
+                  />
+                  <textarea
+                    placeholder="Description"
+                    className="w-full border px-4 py-2 rounded"
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Technos (React, Node...)"
+                    className="w-full border px-4 py-2 rounded"
+                    required
+                  />
+                  <input
+                    type="url"
+                    placeholder="Lien (optionnel)"
+                    className="w-full border px-4 py-2 rounded"
+                  />
+                  <input
+                    type="file"
+                    multiple
+                    className="w-full border px-4 py-2 rounded"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                  >
+                    Ajouter
+                  </button>
                 </form>
               </section>
             )}
 
             {activeTab === "photos" && (
               <section>
-                <h2 className="text-xl font-semibold mb-6 text-gray-800">Ajouter une photo</h2>
+                <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                  Ajouter une photo
+                </h2>
                 <form onSubmit={handleAddPhoto} className="space-y-4">
-                  <input type="text" placeholder="Titre" className="w-full border px-4 py-2 rounded" required />
-                  <input type="text" placeholder="Lieu (optionnel)" className="w-full border px-4 py-2 rounded" />
-                  <input type="date" className="w-full border px-4 py-2 rounded" />
+                  <input
+                    type="text"
+                    placeholder="Titre"
+                    className="w-full border px-4 py-2 rounded"
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Lieu (optionnel)"
+                    className="w-full border px-4 py-2 rounded"
+                  />
+                  <input
+                    type="date"
+                    className="w-full border px-4 py-2 rounded"
+                  />
                   <div className="flex flex-wrap gap-2">
                     {categories.map((cat) => (
                       <label key={cat.id} className="flex items-center gap-2">
@@ -219,8 +311,17 @@ export default function AdminPanel() {
                       </label>
                     ))}
                   </div>
-                  <input type="file" className="w-full border px-4 py-2 rounded" required />
-                  <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Ajouter</button>
+                  <input
+                    type="file"
+                    className="w-full border px-4 py-2 rounded"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                  >
+                    Ajouter
+                  </button>
                 </form>
               </section>
             )}

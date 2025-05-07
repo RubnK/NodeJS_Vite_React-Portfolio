@@ -18,7 +18,7 @@ export default function Photos() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:3001/photos")
+    fetch("/api/photos")
       .then((res) => res.json())
       .then((data) => {
         setPhotos(data);
@@ -114,7 +114,7 @@ export default function Photos() {
                 {" "}
                 {/* 2/3 = 66.666% */}
                 <img
-                  src={`http://localhost:3001/uploads/photos/${photo.filename}`}
+                  src={`/api/uploads/photos/${photo.filename}`}
                   alt={photo.title}
                   className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
@@ -196,7 +196,7 @@ export default function Photos() {
               {/* Conteneur avec hauteur maximale basée sur la vue (viewport) */}
               <div className="relative w-full" style={{ maxHeight: "80vh" }}>
                 <img
-                  src={`http://localhost:3001/uploads/photos/${selectedPhoto.filename}`}
+                  src={`/api/uploads/photos/${selectedPhoto.filename}`}
                   alt={selectedPhoto.title}
                   className="w-full h-full object-contain max-h-[70vh]"
                 />

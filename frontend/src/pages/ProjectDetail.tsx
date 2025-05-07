@@ -23,8 +23,8 @@ export default function ProjectDetail() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch(`http://localhost:3001/projects/${id}`).then((res) => res.json()),
-      fetch(`http://localhost:3001/projects/${id}/images`).then((res) => res.json())
+      fetch(`/api/projects/${id}`).then((res) => res.json()),
+      fetch(`/api/projects/${id}/images`).then((res) => res.json())
     ])
       .then(([projectData, imagesData]) => {
         setProject(projectData);
@@ -202,7 +202,7 @@ export default function ProjectDetail() {
               onClick={() => openLightbox(img, index)}
             >
               <img
-                src={`http://localhost:3001/uploads/projects/${img.filename}`}
+                src={`/api/uploads/projects/${img.filename}`}
                 alt={img.title || project.title}
                 className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
@@ -268,7 +268,7 @@ export default function ProjectDetail() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                src={`http://localhost:3001/uploads/projects/${selectedImage.filename}`}
+                src={`/api/uploads/projects/${selectedImage.filename}`}
                 alt={selectedImage.title || project.title}
                 className="w-full h-full object-contain pb-4 rounded-xl shadow-lg"
               />

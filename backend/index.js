@@ -26,6 +26,7 @@ import contactRoutes from "./routes/contact.js";
 import photoRoutes from "./routes/photos.js";
 import projectImageRoutes from "./routes/projectImages.js";
 import categoryRoutes from "./routes/categories.js";
+import adminRoutes from "./routes/admin.js";
 
 
 dotenv.config();
@@ -34,20 +35,26 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use("/projects", projectRoutes);
-app.use("/projects", projectImageRoutes);
-app.use("/contact", contactRoutes);
-app.use("/photos", photoRoutes);
-app.use("/categories", categoryRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/projects", projectImageRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/photos", photoRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Servir les fichiers statiques d'images
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Route par défaut
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("API opérationnelle");
 });
 
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Serveur lancé sur http://localhost:${PORT}`);
+  });
+}
+
+export default app;
