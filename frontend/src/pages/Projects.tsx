@@ -36,14 +36,14 @@ export default function Projects() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("api.rubnk.com/projects")
+    fetch("https://api.rubnk.com/projects")
       .then((res) => res.json())
       .then(async (data: Project[]) => {
         const projectsWithImages = await Promise.all(
           data.map(async (project) => {
             try {
               const res = await fetch(
-                `api.rubnk.com/projects/${project.id}/images`
+                `https://api.rubnk.com/projects/${project.id}/images`
               );
               const images = await res.json();
               const preview = images.length
