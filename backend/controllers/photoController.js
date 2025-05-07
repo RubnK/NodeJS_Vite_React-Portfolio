@@ -17,14 +17,16 @@ export const uploadPhoto = async (req, res) => {
       title,
       location,
       took_at,
-      filename,
+      filename: req.file.path, 
       categoryIds: parsedCategories,
     });
 
     res.status(201).json(photo);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erreur lors de l’upload de la photo' });
+    console.error("req.file :", req.file);
+    console.error("req.body :", req.body);
+    res.status(500).json({ error: 'Erreur lors de l’upload de la photo : '+err });
   }
 };
 
@@ -32,11 +34,4 @@ export const uploadPhoto = async (req, res) => {
 export const getPhotos = async (req, res) => {
   const photos = await getAllPhotos();
   res.json(photos);
-};
-
-export const servePhoto = async (req, res) => {
-  const file = `uploads/${req.params.filename}`;
-  if (!fs.existsSync(file))
-    return res.status(404).json({ error: "Image non trouvée" });
-  res.sendFile(path.resolve(file));
 };

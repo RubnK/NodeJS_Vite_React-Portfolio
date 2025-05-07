@@ -114,7 +114,7 @@ export default function Photos() {
                 {" "}
                 {/* 2/3 = 66.666% */}
                 <img
-                  src={`/api/uploads/photos/${photo.filename}`}
+                  src={`${photo.filename}`}
                   alt={photo.title}
                   className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
@@ -196,7 +196,7 @@ export default function Photos() {
               {/* Conteneur avec hauteur maximale basée sur la vue (viewport) */}
               <div className="relative w-full" style={{ maxHeight: "80vh" }}>
                 <img
-                  src={`/api/uploads/photos/${selectedPhoto.filename}`}
+                  src={`${selectedPhoto.filename}`}
                   alt={selectedPhoto.title}
                   className="w-full h-full object-contain max-h-[70vh]"
                 />

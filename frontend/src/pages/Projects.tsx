@@ -47,7 +47,7 @@ export default function Projects() {
               );
               const images = await res.json();
               const preview = images.length
-                ? `/api/uploads/projects/${images[0].filename}`
+                ? `${images[0].filename}`
                 : undefined;
               return { ...project, preview };
             } catch {
