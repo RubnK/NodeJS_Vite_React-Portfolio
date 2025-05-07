@@ -7,3 +7,8 @@ export const saveContactMessage = async (name, email, message) => {
   );
   return res.rows[0];
 };
+
+export const getMessagesFromDb = async () => {
+  const res = await pool.query("SELECT * FROM contacts ORDER BY sent_at DESC");
+  return res.rows;
+}

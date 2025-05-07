@@ -25,6 +25,8 @@ import projectRoutes from "./routes/projects.js";
 import contactRoutes from "./routes/contact.js";
 import photoRoutes from "./routes/photos.js";
 import projectImageRoutes from "./routes/projectImages.js";
+import categoryRoutes from "./routes/categories.js";
+
 
 dotenv.config();
 const app = express();
@@ -36,6 +38,7 @@ app.use("/projects", projectRoutes);
 app.use("/projects", projectImageRoutes);
 app.use("/contact", contactRoutes);
 app.use("/photos", photoRoutes);
+app.use("/categories", categoryRoutes);
 
 // Servir les fichiers statiques d'images
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
