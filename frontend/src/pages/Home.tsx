@@ -7,13 +7,13 @@ export default function Home() {
   const [thumbnails, setThumbnails] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/photos")
+    fetch("/api/photos")
       .then((res) => res.json())
       .then((data) => {
         const thumbs = data
           .slice(0, 3)
           .map(
-            (p: any) => `http://localhost:3001/uploads/photos/${p.filename}`
+            (p: any) => `/api/uploads/photos/${p.filename}`
           );
         setThumbnails(thumbs);
       })

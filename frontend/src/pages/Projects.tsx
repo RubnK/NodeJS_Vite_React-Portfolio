@@ -36,18 +36,18 @@ export default function Projects() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3001/projects")
+    fetch("/api/projects")
       .then((res) => res.json())
       .then(async (data: Project[]) => {
         const projectsWithImages = await Promise.all(
           data.map(async (project) => {
             try {
               const res = await fetch(
-                `http://localhost:3001/projects/${project.id}/images`
+                `/api/projects/${project.id}/images`
               );
               const images = await res.json();
               const preview = images.length
-                ? `http://localhost:3001/uploads/projects/${images[0].filename}`
+                ? `/api/uploads/projects/${images[0].filename}`
                 : undefined;
               return { ...project, preview };
             } catch {
