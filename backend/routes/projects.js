@@ -6,12 +6,13 @@ import {
   editProject,
   removeProject,
 } from "../controllers/projectController.js";
+import upload from "../middleware/uploadProjectImages.js";
 
 const router = express.Router();
 
 router.get("/", getProjects);
 router.get("/:id", getProject);
-router.post("/", addProject);
+router.post("/", upload.array("images"), addProject); 
 router.put("/:id", editProject);
 router.delete("/:id", removeProject);
 

@@ -78,7 +78,43 @@ export default function AdminPanel() {
 
   const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNotification("Projet ajouté avec succès");
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData();
+
+    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
+    const description = (
+      form.elements.namedItem("description") as HTMLTextAreaElement
+    ).value;
+    const stack = (form.elements.namedItem("stack") as HTMLInputElement).value;
+    const link = (form.elements.namedItem("link") as HTMLInputElement).value;
+    const images = (form.elements.namedItem("images") as HTMLInputElement)
+      .files;
+
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("stack", stack);
+    formData.append("link", link);
+
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+      }
+    }
+
+    try {
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Erreur ajout projet");
+
+      setNotification("Projet ajouté avec succès");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      setNotification("Erreur lors de l'ajout du projet");
+    }
   };
 
   const handleAddPhoto = async (e: React.FormEvent) => {
@@ -263,28 +299,33 @@ export default function AdminPanel() {
                     type="text"
                     placeholder="Titre"
                     className="w-full border px-4 py-2 rounded"
+                    name="title"
                     required
                   />
                   <textarea
                     placeholder="Description"
                     className="w-full border px-4 py-2 rounded"
                     required
+                    name="description"
                   />
                   <input
                     type="text"
                     placeholder="Technos (React, Node...)"
                     className="w-full border px-4 py-2 rounded"
                     required
+                    name="stack"
                   />
                   <input
                     type="url"
                     placeholder="Lien (optionnel)"
                     className="w-full border px-4 py-2 rounded"
+                    name="link"
                   />
                   <input
                     type="file"
                     multiple
                     className="w-full border px-4 py-2 rounded"
+                    name="images"
                   />
                   <button
                     type="submit"
@@ -307,15 +348,18 @@ export default function AdminPanel() {
                     placeholder="Titre"
                     className="w-full border px-4 py-2 rounded"
                     required
+                    name="title"
                   />
                   <input
                     type="text"
                     placeholder="Lieu (optionnel)"
                     className="w-full border px-4 py-2 rounded"
+                    name="location"
                   />
                   <input
                     type="date"
                     className="w-full border px-4 py-2 rounded"
+                    name="took_at"
                   />
                   <div className="flex flex-wrap gap-2">
                     {categories.map((cat) => (

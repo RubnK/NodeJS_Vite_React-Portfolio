@@ -1,9 +1,6 @@
 import express from "express";
-import upload from "../middleware/uploadPhotos.js";
-import {
-  uploadPhoto,
-  getPhotos,
-} from "../controllers/photoController.js";
+import upload from "../middleware/uploadPhotos.js"; // ← celui que tu as bien défini
+import { uploadPhoto, getPhotos } from "../controllers/photoController.js";
 
 const router = express.Router();
 
