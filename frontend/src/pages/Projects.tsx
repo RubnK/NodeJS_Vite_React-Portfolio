@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "../types/Project";
 import stackColors from "../utils/stackColors";
 
@@ -12,13 +12,22 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-    },
-  },
+      delayChildren: 0.3
+    }
+  }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20
+    }
+  }
 };
 
 export default function Projects() {
@@ -54,10 +63,12 @@ export default function Projects() {
 
   if (isLoading) {
     return (
-      <div className="pt-30 px-6 max-w-6xl mx-auto min-h-screen">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+        />
       </div>
     );
   }
@@ -67,65 +78,88 @@ export default function Projects() {
       initial="hidden"
       animate="show"
       variants={containerVariants}
-      className="pt-32 px-6 max-w-7xl mx-auto min-h-screen"
+      className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen"
     >
-      <motion.h1
-        variants={itemVariants}
-        className="text-4xl font-bold mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent pb-1"
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mb-12 text-center"
       >
-        Mes Projets
-      </motion.h1>
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          Mes Projets
+        </h1>
+        <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full" />
+      </motion.div>
 
       <motion.div
         variants={containerVariants}
         className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
       >
-        {projects.map((project) => (
-          <motion.div
-            key={project.id}
-            variants={itemVariants}
-            whileHover={{ y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Link
-              to={`/projets/${project.id}`}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block overflow-hidden border border-gray-100"
+        <AnimatePresence>
+          {projects.map((project) => (
+            <motion.div
+              key={project.id}
+              variants={itemVariants}
+              whileHover={{ 
+                y: -8,
+                transition: { type: "spring", stiffness: 400 }
+              }}
+              className="group"
             >
-              {project.preview && (
-                <div className="relative w-full pb-[56.25%] overflow-hidden rounded-t-xl">
-                  <img
-                    src={project.preview}
-                    alt={project.title}
-                    className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              )}
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-3 text-gray-800">
-                  {project.title}
-                </h2>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.stack.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700"
-                    >
-                      <span
-                        className="w-3 h-3 rounded-full mr-2"
-                        style={{ backgroundColor: stackColors[tech] || "#ccc" }}
+              <Link
+                to={`/projets/${project.id}`}
+                className="block h-full"
+              >
+                <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col overflow-hidden border border-gray-100 group-hover:border-blue-200">
+                  {project.preview && (
+                    <div className="relative w-full pb-[56.25%] overflow-hidden rounded-t-2xl">
+                      <motion.img
+                        src={project.preview}
+                        alt={project.title}
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                        initial={{ opacity: 0.9 }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          transition: { duration: 0.5 }
+                        }}
+                        loading="lazy"
                       />
-                      {tech}
-                    </span>
-                  ))}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  )}
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h2 className="text-xl font-semibold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">
+                      {project.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4 line-clamp-3 flex-1">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {project.stack.map((tech, i) => {
+                        const color = stackColors[tech] || "#9CA3AF";
+                        return (
+                          <motion.span
+                            key={i}
+                            whileHover={{ scale: 1.05 }}
+                            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gray-50 text-gray-700 border border-gray-200"
+                            style={{ borderColor: color }}
+                          >
+                            <span
+                              className="w-2.5 h-2.5 rounded-full"
+                              style={{ backgroundColor: color }}
+                            />
+                            {tech}
+                          </motion.span>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+              </Link>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );
