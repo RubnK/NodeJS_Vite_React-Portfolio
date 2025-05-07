@@ -13,7 +13,7 @@ export default function Home() {
         const thumbs = data
           .slice(0, 3)
           .map(
-            (p: any) => `/api/uploads/photos/${p.filename}`
+            (p: any) => `${p.filename}`
           );
         setThumbnails(thumbs);
       })

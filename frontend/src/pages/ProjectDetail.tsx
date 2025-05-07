@@ -202,7 +202,7 @@ export default function ProjectDetail() {
               onClick={() => openLightbox(img, index)}
             >
               <img
-                src={`/api/uploads/projects/${img.filename}`}
+                src={`${img.filename}`}
                 alt={img.title || project.title}
                 className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
@@ -268,7 +268,7 @@ export default function ProjectDetail() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                src={`/api/uploads/projects/${selectedImage.filename}`}
+                src={`${selectedImage.filename}`}
                 alt={selectedImage.title || project.title}
                 className="w-full h-full object-contain pb-4 rounded-xl shadow-lg"
               />

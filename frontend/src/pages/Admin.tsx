@@ -83,7 +83,26 @@ export default function AdminPanel() {
 
   const handleAddPhoto = async (e: React.FormEvent) => {
     e.preventDefault();
-    setNotification("Photo ajoutée avec succès");
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    formData.append("categoryIds", JSON.stringify(selectedCategories));
+
+    try {
+      const res = await fetch("/api/photos", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Échec de l'upload");
+
+      setNotification("Photo ajoutée avec succès");
+      setSelectedCategories([]);
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      setNotification("Erreur lors de l'ajout de la photo");
+    }
   };
 
   if (!authenticated) {
@@ -315,6 +334,7 @@ export default function AdminPanel() {
                     type="file"
                     className="w-full border px-4 py-2 rounded"
                     required
+                    name="image"
                   />
                   <button
                     type="submit"
