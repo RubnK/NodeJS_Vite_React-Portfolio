@@ -23,8 +23,8 @@ export default function ProjectDetail() {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch(`/api/projects/${id}`).then((res) => res.json()),
-      fetch(`/api/projects/${id}/images`).then((res) => res.json())
+      fetch(`api.rubnk.com/projects/${id}`).then((res) => res.json()),
+      fetch(`api.rubnk.com/projects/${id}/images`).then((res) => res.json())
     ])
       .then(([projectData, imagesData]) => {
         setProject(projectData);

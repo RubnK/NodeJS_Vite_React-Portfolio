@@ -34,7 +34,7 @@ export default function AdminPanel() {
 
   const fetchContacts = async () => {
     try {
-      const res = await fetch("/api/contact");
+      const res = await fetch("api.rubnk.com/contact");
       const data = await res.json();
       setContacts(data);
     } catch (err) {
@@ -47,7 +47,7 @@ export default function AdminPanel() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch("api.rubnk.com/categories");
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -57,7 +57,7 @@ export default function AdminPanel() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("/api/admin/login", {
+    const res = await fetch("api.rubnk.com/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
@@ -102,7 +102,7 @@ export default function AdminPanel() {
     }
 
     try {
-      const res = await fetch("/api/projects", {
+      const res = await fetch("api.rubnk.com/projects", {
         method: "POST",
         body: formData,
       });
@@ -125,7 +125,7 @@ export default function AdminPanel() {
     formData.append("categoryIds", JSON.stringify(selectedCategories));
 
     try {
-      const res = await fetch("/api/photos", {
+      const res = await fetch("api.rubnk.com/photos", {
         method: "POST",
         body: formData,
       });
