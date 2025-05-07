@@ -46,11 +46,11 @@ export default function Home() {
       {/* Introduction */}
       <motion.section variants={item}>
         <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent leading-[1.3]">
-          Bienvenue, je suis Ruben
+          Bienvenue, je m'appelle Ruben
         </h1>
         <p className="text-xl text-gray-300 max-w-3xl">
-          Étudiant en développement web à l'EFREI, passionné par la création,
-          l'écriture et la photographie.
+          Étudiant en développement web & logiciel à l'EFREI à la recherche
+          d'une alternance.
         </p>
       </motion.section>
 
@@ -113,13 +113,16 @@ export default function Home() {
         </h2>
         <div className="prose prose-invert max-w-none">
           <p>
-            Je m'investis dans des projets à fort impact humain, que ce soit en
-            tant que développeur ou bénévole. Ce portfolio rassemble mes
-            travaux, expériences et engagements.
+            Je suis un développeur web et logiciel passionné, actuellement étudiant à
+            l'EFREI. Je suis passionné par le développement, l'écriture et la photographie.
+            Je suis à l'aise à l'oral et à l'écrit, ce qui me permet de m'adapter à
+            différents environnements de travail. J'aime travailleur en équipe et je suis
+            toujours prêt à acquérir de nouvelles compétences.
           </p>
           <p>
-            Mon approche combine rigueur technique et sensibilité artistique,
-            avec une attention particulière pour l'expérience utilisateur.
+            Je m'investis dans des projets à fort impact, que ce soit dans le cadre de mes
+            études ou en dehors. Je suis toujours à la recherche de nouvelles opportunités
+            pour apprendre.
           </p>
         </div>
       </motion.section>
@@ -164,17 +167,31 @@ export default function Home() {
           Envie de me contacter ?
         </h2>
         <p className="text-lg text-gray-300 mb-6 max-w-2xl">
-          Je suis ouvert aux opportunités de collaboration, de stage ou
-          d'alternance. N'hésitez pas à me contacter pour discuter de votre
-          projet.
+          Je suis ouvert à toutes les opportunités de collaboration et
+          d'alternance. <br/>N'hésitez pas à me contacter !
         </p>
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
-        >
-          <span>Me contacter</span>
-          <FiArrowRight />
-        </Link>
+        <motion.div whileHover="hover">
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
+          >
+            <motion.span
+              variants={{
+                hover: { x: 5 },
+              }}
+              transition={{ type: "spring", stiffness: 400 }}
+              className="flex items-center gap-2"
+            >
+              Me contacter <FiArrowRight />
+            </motion.span>
+            <motion.div
+              className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"
+              variants={{
+                hover: { opacity: 0.1 },
+              }}
+            />
+          </Link>
+        </motion.div>
       </motion.section>
     </motion.div>
   );

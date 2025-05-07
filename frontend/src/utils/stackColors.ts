@@ -20,7 +20,8 @@ const stackColors: Record<string, string> = {
   UNIX: "#1c6434",
   Apache: "#aa0000",
   Android: "#43dd88",
-  "Vue.JS": "#08bf86",
+  Vue: "#08bf86",
+  Vite: "#bd34fe",
   "Alpine.JS": "#7bc3d3",
   "Three.JS": "#000000",
   Composer: "#8c5b37",
@@ -29,6 +30,7 @@ const stackColors: Record<string, string> = {
   "Anglais (courant)": "#000000",
   "API REST": "#000000",
   "CI/CD": "#000000",
+  "Tailwind CSS": "#38bdf8",
 };
 
 export default stackColors;
