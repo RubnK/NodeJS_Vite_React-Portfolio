@@ -5,6 +5,15 @@ import {
   updateProject,
   deleteProject,
 } from "../models/projectModel.js";
+import { saveProjectImage } from "../models/projectImageModel.js";
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 export const getProjects = async (req, res) => {
   const data = await getAllProjects();
@@ -17,10 +26,42 @@ export const getProject = async (req, res) => {
 };
 
 export const addProject = async (req, res) => {
-  const { title, description, link, stack } = req.body;
-  if (!title) return res.status(400).json({ error: "Titre obligatoire" });
-  const data = await createProject(title, description, link, stack || []);
-  res.status(201).json(data);
+  try {
+    const { title, description, stack, link } = req.body;
+
+    const imageUrls = [];
+
+    for (const file of req.files) {
+      const streamUpload = () =>
+        new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "projects" },
+            (err, result) => {
+              if (err) return reject(err);
+              resolve(result.secure_url);
+            }
+          );
+          streamifier.createReadStream(file.buffer).pipe(stream);
+        });
+
+      const imageUrl = await streamUpload();
+      imageUrls.push(imageUrl);
+    }
+
+    const parsedStack =
+      typeof stack === "string" ? stack.split(",").map((s) => s.trim()) : stack;
+
+    const project = await createProject(title, description, link, parsedStack);
+
+    for (const url of imageUrls) {
+      await saveProjectImage(project.id, url);
+    }
+
+    res.status(201).json(project);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur ajout projet : " + err.message });
+  }
 };
 
 export const editProject = async (req, res) => {
