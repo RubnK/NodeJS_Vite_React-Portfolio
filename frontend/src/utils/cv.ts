@@ -13,7 +13,7 @@ export const cv = {
   },
 
   skills: {
-    frontend: ["HTML", "CSS", "JavaScript", "Three.JS", "Alpine.JS", "Vue.JS"],
+    frontend: ["HTML", "CSS", "JavaScript", "Three.JS", "Alpine.JS", "Vue", "React", "TypeScript", "Tailwind CSS", "Vite"],
     backend: ["PHP", "Symfony", "Composer", "Node.JS", "API REST"],
     database: ["MySQL", "PostgreSQL", "MongoDB"],
     software: ["Python", "C", "Shell", "Java", "Android"],
