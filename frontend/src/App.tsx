@@ -8,6 +8,7 @@ import Error404 from './pages/Error404';
 import AdminPanel from './pages/Admin';
 import ProjectDetail from './pages/ProjectDetail';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -20,9 +21,10 @@ export default function App() {
         <Route path="/photos" element={<Photos />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/projets/:id" element={<ProjectDetail />} />
-        <Route path="*" element={<Error404 />} />
+        <Route path="/*" element={<Error404 />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
