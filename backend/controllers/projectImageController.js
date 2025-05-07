@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
-import { saveProjectImage } from "../models/projectImageModel.js";
+import { saveProjectImage, getImagesByProjectId } from "../models/projectImageModel.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD,
@@ -39,11 +39,11 @@ export const uploadProjectImages = async (req, res) => {
 export const getProjectImages = async (req, res) => {
   const { id } = req.params;
   try {
-    const images = await getAllProjectImages(id);
+    const images = await getImagesByProjectId(id);
     res.json(images);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Erreur interne" });
+    res.status(500).json({ error: "Erreur interne : " + err.message });
   }
 };
 
