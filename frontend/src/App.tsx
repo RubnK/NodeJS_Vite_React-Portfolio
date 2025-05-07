@@ -4,6 +4,8 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Photos from './pages/Photos';
 import Cv from './pages/Cv';
+import Error404 from './pages/Error404';
+import AdminPanel from './pages/Admin';
 import ProjectDetail from './pages/ProjectDetail';
 import Navbar from './components/Navbar';
 
@@ -18,6 +20,8 @@ export default function App() {
         <Route path="/photos" element={<Photos />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/projets/:id" element={<ProjectDetail />} />
+        <Route path="*" element={<Error404 />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </Router>
   );
