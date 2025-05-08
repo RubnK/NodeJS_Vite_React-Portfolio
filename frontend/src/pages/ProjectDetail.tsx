@@ -136,7 +136,6 @@ export default function ProjectDetail() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mb-8"
           >
             <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
               Technologies
@@ -160,22 +159,7 @@ export default function ProjectDetail() {
             </div>
           </motion.div>
 
-          {/* Description détaillée */}
-          {project.description && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mb-8"
-            >
-              <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
-                Détails du projet
-              </h2>
-              <div className="prose prose-invert max-w-none">
-                {project.description}
-              </div>
-            </motion.div>
-          )}
+          
         </div>
 
         {/* Liens et métadonnées */}
@@ -185,7 +169,6 @@ export default function ProjectDetail() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="mb-8"
             >
               <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
                 Liens
