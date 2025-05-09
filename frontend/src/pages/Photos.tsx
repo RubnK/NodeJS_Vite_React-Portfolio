@@ -71,13 +71,21 @@ export default function Photos() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+        />
       </div>
     );
   }
 
   return (
-    <div className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen bg-gray-900 text-gray-100">
+    <motion.div
+      initial="hidden"
+      animate="show"
+      className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen"
+    >
       {/* Titre identique au CV */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
@@ -258,6 +266,6 @@ export default function Photos() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
