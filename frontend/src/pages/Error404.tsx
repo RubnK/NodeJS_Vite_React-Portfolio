@@ -42,7 +42,7 @@ export default function Error404() {
       >
         <div className="relative w-48 h-48 md:w-64 md:h-64">
           <div className="absolute inset-0 rounded-full bg-blue-500/10 animate-pulse" />
-          <div className="absolute inset-4 rounded-full border-4 border-dashed border-cyan-400/30 animate-spin-slow" />
+          <div className="absolute inset-4 rounded-full border-4 border-dashed border-cyan-400/30 animate-[spin_60s_infinite]" />
           <div className="absolute inset-8 rounded-full bg-gray-800/50 backdrop-blur-sm flex items-center justify-center">
             <span className="text-4xl md:text-6xl font-bold text-cyan-400">?</span>
           </div>
