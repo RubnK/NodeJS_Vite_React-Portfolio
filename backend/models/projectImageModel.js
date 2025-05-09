@@ -10,7 +10,7 @@ export const saveProjectImage = async (projectId, filename) => {
 
 export const getImagesByProjectId = async (projectId) => {
   const res = await pool.query(
-    "SELECT * FROM project_images WHERE project_id = $1 ORDER BY uploaded_at DESC",
+    "SELECT * FROM project_images WHERE project_id = $1 ORDER BY id ASC",
     [projectId]
   );
   return res.rows;
