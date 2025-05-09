@@ -10,11 +10,7 @@ export default function Home() {
     fetch("https://api.rubnk.com/photos")
       .then((res) => res.json())
       .then((data) => {
-        const thumbs = data
-          .slice(0, 3)
-          .map(
-            (p: any) => `${p.filename}`
-          );
+        const thumbs = data.slice(0, 3).map((p: any) => `${p.filename}`);
         setThumbnails(thumbs);
       })
       .catch(console.error);
@@ -113,16 +109,17 @@ export default function Home() {
         </h2>
         <div className="prose prose-invert max-w-none">
           <p>
-            Je suis un développeur web et logiciel passionné, actuellement étudiant à
-            l'EFREI. Je suis passionné par le développement, l'écriture et la photographie.
-            Je suis à l'aise à l'oral et à l'écrit, ce qui me permet de m'adapter à
-            différents environnements de travail. J'aime travailleur en équipe et je suis
-            toujours prêt à acquérir de nouvelles compétences.
+            Je suis un développeur web et logiciel passionné, actuellement
+            étudiant à l'EFREI. Je suis passionné par le développement,
+            l'écriture et la photographie. Je suis à l'aise à l'oral et à
+            l'écrit, ce qui me permet de m'adapter à différents environnements
+            de travail. J'aime travailler en équipe et je suis toujours prêt à
+            acquérir de nouvelles compétences.
           </p>
           <p>
-            Je m'investis dans des projets à fort impact, que ce soit dans le cadre de mes
-            études ou en dehors. Je suis toujours à la recherche de nouvelles opportunités
-            pour apprendre.
+            Je m'investis dans des projets à fort impact, que ce soit dans le
+            cadre de mes études ou en dehors. Je suis toujours à la recherche de
+            nouvelles opportunités pour apprendre.
           </p>
         </div>
       </motion.section>
@@ -168,7 +165,8 @@ export default function Home() {
         </h2>
         <p className="text-lg text-gray-300 mb-6 max-w-2xl">
           Je suis ouvert à toutes les opportunités de collaboration et
-          d'alternance. <br/>N'hésitez pas à me contacter !
+          d'alternance. <br />
+          N'hésitez pas à me contacter !
         </p>
         <motion.div whileHover="hover">
           <Link
