@@ -10,10 +10,12 @@ import ProjectDetail from './pages/ProjectDetail';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Liens from './pages/Liens';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
