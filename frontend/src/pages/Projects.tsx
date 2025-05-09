@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "../types/Project";
 import stackColors from "../utils/stackColors";
+import truncateWords from "../utils/truncateWords";
 
 type ProjectWithImage = Project & { preview?: string };
 
@@ -12,22 +13,22 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.3
-    }
-  }
+      delayChildren: 0.3,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     transition: {
       type: "spring",
       stiffness: 300,
-      damping: 20
-    }
-  }
+      damping: 20,
+    },
+  },
 };
 
 export default function Projects() {
@@ -101,16 +102,13 @@ export default function Projects() {
             <motion.div
               key={project.id}
               variants={itemVariants}
-              whileHover={{ 
+              whileHover={{
                 y: -8,
-                transition: { type: "spring", stiffness: 400 }
+                transition: { type: "spring", stiffness: 400 },
               }}
               className="group"
             >
-              <Link
-                to={`/projets/${project.id}`}
-                className="block h-full"
-              >
+              <Link to={`/projets/${project.id}`} className="block h-full">
                 <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col overflow-hidden border border-gray-100 group-hover:border-blue-200">
                   {project.preview && (
                     <div className="relative w-full pb-[56.25%] overflow-hidden rounded-t-2xl">
@@ -119,9 +117,9 @@ export default function Projects() {
                         alt={project.title}
                         className="absolute top-0 left-0 w-full h-full object-cover"
                         initial={{ opacity: 0.9 }}
-                        whileHover={{ 
+                        whileHover={{
                           scale: 1.05,
-                          transition: { duration: 0.5 }
+                          transition: { duration: 0.5 },
                         }}
                         loading="lazy"
                       />
@@ -132,9 +130,10 @@ export default function Projects() {
                     <h2 className="text-xl font-semibold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">
                       {project.title}
                     </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3 flex-1">
-                      {project.description}
+                    <p className="text-gray-600 mb-4 flex-1">
+                      {truncateWords(project.description, 20)}
                     </p>
+
                     <div className="flex flex-wrap gap-2 mt-auto">
                       {project.stack.map((tech, i) => {
                         const color = stackColors[tech] || "#9CA3AF";
