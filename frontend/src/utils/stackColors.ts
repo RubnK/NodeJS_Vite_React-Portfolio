@@ -31,6 +31,9 @@ const stackColors: Record<string, string> = {
   "API REST": "#000000",
   "CI/CD": "#000000",
   "Tailwind CSS": "#38bdf8",
+  Twig: "#bccf28",
+  Firebase: "#ff9100",
+  Pinia: "#ffdf62",
 };
 
 export default stackColors;

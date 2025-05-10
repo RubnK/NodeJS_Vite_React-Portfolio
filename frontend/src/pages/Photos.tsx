@@ -118,13 +118,12 @@ export default function Photos() {
               onClick={() => openLightbox(photo, index)}
             >
               {/* Conteneur 3:2 */}
-              <div className="relative w-full pb-[66.666%]">
+              <div className="relative w-full pb-[66.666%] transition-transform duration-500 group-hover:scale-105">
                 {" "}
-                {/* 2/3 = 66.666% */}
                 <img
                   src={`${photo.filename}`}
                   alt={photo.title}
-                  className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="absolute top-0 left-0 w-full h-full object-cover"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

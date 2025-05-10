@@ -87,7 +87,7 @@ export default function Projects() {
         transition={{ delay: 0.2 }}
         className="mb-12 text-center"
       >
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent leading-[1.3]">
           Mes Projets
         </h1>
         <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full" />
