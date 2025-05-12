@@ -1,7 +1,10 @@
 import pool from "../db.js";
 
-export const getAllProjects = async () => {
-  const res = await pool.query("SELECT * FROM projects ORDER BY id DESC");
+export const getAllProjects = async (limit, offset) => {
+  const res = await pool.query(
+    "SELECT * FROM projects ORDER BY id DESC LIMIT $1 OFFSET $2",
+    [limit, offset]
+  );
   return res.rows;
 };
 

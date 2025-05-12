@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Project } from "../types/Project";
@@ -33,46 +33,69 @@ const itemVariants = {
 
 export default function Projects() {
   const [projects, setProjects] = useState<ProjectWithImage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 6;
+
+  const pageRef = useRef(0);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const isFetchingRef = useRef(false);
+
+  const fetchProjects = async () => {
+    if (isFetchingRef.current || !hasMore) return;
+    isFetchingRef.current = true;
+
+    try {
+      const res = await fetch(
+        `https://api.rubnk.com/projects?limit=${limit}&offset=${pageRef.current * limit}`
+      );
+      const data: Project[] = await res.json();
+
+      if (data.length < limit) setHasMore(false);
+
+      const projectsWithImages: ProjectWithImage[] = await Promise.all(
+        data.map(async (project) => {
+          try {
+            const res = await fetch(
+              `https://api.rubnk.com/projects/${project.id}/images`
+            );
+            const images = await res.json();
+            const preview = images.length ? images[0].filename : undefined;
+            return { ...project, preview };
+          } catch {
+            return { ...project };
+          }
+        })
+      );
+
+      setProjects((prev) => [...prev, ...projectsWithImages]);
+      pageRef.current += 1;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isFetchingRef.current = false;
+    }
+  };
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch("https://api.rubnk.com/projects")
-      .then((res) => res.json())
-      .then(async (data: Project[]) => {
-        const projectsWithImages = await Promise.all(
-          data.map(async (project) => {
-            try {
-              const res = await fetch(
-                `https://api.rubnk.com/projects/${project.id}/images`
-              );
-              const images = await res.json();
-              const preview = images.length
-                ? `${images[0].filename}`
-                : undefined;
-              return { ...project, preview };
-            } catch {
-              return { ...project };
-            }
-          })
-        );
-        setProjects(projectsWithImages);
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
+    fetchProjects();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
-        />
-      </div>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetchingRef.current) {
+          fetchProjects();
+        }
+      },
+      { threshold: 1 }
     );
-  }
+
+    const currentRef = loaderRef.current;
+    if (currentRef) observer.observe(currentRef);
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -135,23 +158,24 @@ export default function Projects() {
                     </p>
 
                     <div className="flex flex-wrap gap-2 mt-auto">
-                      {project.stack.map((tech, i) => {
-                        const color = stackColors[tech] || "#9CA3AF";
-                        return (
-                          <motion.span
-                            key={i}
-                            whileHover={{ scale: 1.05 }}
-                            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gray-50 text-gray-700 border border-gray-200"
-                            style={{ borderColor: color }}
-                          >
-                            <span
-                              className="w-2.5 h-2.5 rounded-full"
-                              style={{ backgroundColor: color }}
-                            />
-                            {tech}
-                          </motion.span>
-                        );
-                      })}
+                      {Array.isArray(project.stack) &&
+                        project.stack.map((tech, i) => {
+                          const color = stackColors[tech] || "#9CA3AF";
+                          return (
+                            <motion.span
+                              key={i}
+                              whileHover={{ scale: 1.05 }}
+                              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-gray-50 text-gray-700 border border-gray-200"
+                              style={{ borderColor: color }}
+                            >
+                              <span
+                                className="w-2.5 h-2.5 rounded-full"
+                                style={{ backgroundColor: color }}
+                              />
+                              {tech}
+                            </motion.span>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
@@ -160,6 +184,14 @@ export default function Projects() {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      <div ref={loaderRef} className="text-center py-10">
+        {hasMore ? (
+          <div className="text-gray-400">Chargement en cours...</div>
+        ) : (
+          <div className="text-gray-500">Tous les projets sont affichés.</div>
+        )}
+      </div>
     </motion.div>
   );
 }

@@ -16,8 +16,16 @@ cloudinary.config({
 });
 
 export const getProjects = async (req, res) => {
-  const data = await getAllProjects();
-  res.json(data);
+  const limit = parseInt(req.query.limit) || 6;
+  const offset = parseInt(req.query.offset) || 0;
+
+  try {
+    const data = await getAllProjects(limit, offset);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur récupération projets" });
+  }
 };
 
 export const getProject = async (req, res) => {
