@@ -53,6 +53,10 @@ export default function Photos() {
   }, []);
 
   useEffect(() => {
+      document.title = "Photos | RubnK";
+  }, []);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {

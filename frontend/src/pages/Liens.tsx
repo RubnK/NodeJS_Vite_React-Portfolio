@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { FiGithub, FiInstagram, FiTwitch, FiYoutube, FiArrowRight } from "react-icons/fi";
 import { FaXTwitter, FaLinkedinIn } from 'react-icons/fa6';
+import { useEffect } from "react";
 
 const links = [
   { name: "GitHub", icon: <FiGithub />, url: "https://github.com/rubnk", color: "from-gray-800 to-gray-900" },
@@ -36,6 +37,9 @@ const item = {
 };
 
 export default function Links() {
+  useEffect(() => {
+    document.title = "Liens | RubnK";
+  }, []);
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center px-8 py-24">
       <motion.div

@@ -16,6 +16,10 @@ export default function Home() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+      document.title = "Portfolio | RubnK";
+  }, []);
+
   // Variants pour les animations
   const container = {
     hidden: { opacity: 0 },

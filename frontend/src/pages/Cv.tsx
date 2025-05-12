@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { cv } from "../utils/cv";
 import stackColors from "../utils/stackColors";
+import { useEffect } from "react";
 import {
   FiMail,
   FiPhone,
@@ -28,6 +29,10 @@ const Cv = () => {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   };
+
+  useEffect(() => {
+        document.title = "CV | RubnK";
+    }, []);
 
   return (
     <motion.div

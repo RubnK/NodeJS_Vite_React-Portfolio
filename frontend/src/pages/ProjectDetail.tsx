@@ -30,7 +30,9 @@ export default function ProjectDetail() {
     setLoading(true);
     Promise.all([
       fetch(`https://api.rubnk.com/projects/${id}`).then((res) => res.json()),
-      fetch(`https://api.rubnk.com/projects/${id}/images`).then((res) => res.json()),
+      fetch(`https://api.rubnk.com/projects/${id}/images`).then((res) =>
+        res.json()
+      ),
     ])
       .then(([projectData, imagesData]) => {
         setProject(projectData);
@@ -39,6 +41,12 @@ export default function ProjectDetail() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (project) {
+      document.title = project.title + " | RubnK";
+    }
+  }, [project]);
 
   // Gestion des touches clavier
   useEffect(() => {
@@ -158,8 +166,6 @@ export default function ProjectDetail() {
               ))}
             </div>
           </motion.div>
-
-          
         </div>
 
         {/* Liens et métadonnées */}

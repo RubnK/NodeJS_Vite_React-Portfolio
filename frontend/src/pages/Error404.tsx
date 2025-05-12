@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowLeft } from 'react-icons/fi';
+import { useEffect } from 'react';
 
 export default function Error404() {
+  useEffect(() => {
+      document.title = "Error 404 | RubnK";
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

@@ -46,7 +46,9 @@ export default function Projects() {
 
     try {
       const res = await fetch(
-        `https://api.rubnk.com/projects?limit=${limit}&offset=${pageRef.current * limit}`
+        `https://api.rubnk.com/projects?limit=${limit}&offset=${
+          pageRef.current * limit
+        }`
       );
       const data: Project[] = await res.json();
 
@@ -78,6 +80,10 @@ export default function Projects() {
 
   useEffect(() => {
     fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    document.title = "Projets | RubnK";
   }, []);
 
   useEffect(() => {

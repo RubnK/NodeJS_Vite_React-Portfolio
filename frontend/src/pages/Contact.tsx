@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -36,6 +37,10 @@ export default function Contact() {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+      document.title = "Contact | RubnK";
+  }, []);
 
   return (
     <motion.div
