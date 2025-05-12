@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -17,15 +17,58 @@ export default function Photos() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const pageRef = useRef(0);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 6;
+
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  const isFetchingRef = useRef(false);
+
+  const fetchPhotos = async () => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+
+    try {
+      const res = await fetch(
+        `https://api.rubnk.com/photos?limit=${limit}&offset=${
+          pageRef.current * limit
+        }`
+      );
+      const data = await res.json();
+      if (data.length < limit) setHasMore(false);
+      setPhotos((prev) => [...prev, ...data]);
+      pageRef.current += 1;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+      isFetchingRef.current = false;
+    }
+    await new Promise((res) => setTimeout(res, 300));
+  };
+
   useEffect(() => {
-    fetch("https://api.rubnk.com/photos")
-      .then((res) => res.json())
-      .then((data) => {
-        setPhotos(data);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    fetchPhotos();
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
+          setLoading(true);
+          fetchPhotos();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const currentRef = loaderRef.current;
+    if (currentRef) observer.observe(currentRef);
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, [loaderRef, hasMore, loading]);
 
   const openLightbox = (photo: Photo, index: number) => {
     setSelectedPhoto(photo);
@@ -46,7 +89,6 @@ export default function Photos() {
     setCurrentIndex(newIndex);
   };
 
-  // Gestion des touches clavier
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!selectedPhoto) return;
@@ -68,25 +110,12 @@ export default function Photos() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedPhoto, currentIndex]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
-        />
-      </div>
-    );
-  }
-
   return (
     <motion.div
       initial="hidden"
       animate="show"
       className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen"
     >
-      {/* Titre identique au CV */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -99,7 +128,7 @@ export default function Photos() {
         <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto mt-4 rounded-full" />
       </motion.div>
 
-      {!loading && photos.length === 0 && (
+      {photos.length === 0 && !loading && (
         <p className="text-center text-gray-400">Aucune photo trouvée.</p>
       )}
 
@@ -117,11 +146,9 @@ export default function Photos() {
               className="bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700 overflow-hidden hover:border-cyan-400 transition-all cursor-pointer"
               onClick={() => openLightbox(photo, index)}
             >
-              {/* Conteneur 3:2 */}
               <div className="relative w-full pb-[66.666%] transition-transform duration-500 group-hover:scale-105">
-                {" "}
                 <img
-                  src={`${photo.filename}`}
+                  src={photo.filename}
                   alt={photo.title}
                   className="absolute top-0 left-0 w-full h-full object-cover"
                   loading="lazy"
@@ -159,6 +186,15 @@ export default function Photos() {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Loader / Fin de scroll */}
+      <div ref={loaderRef} className="text-center py-10">
+        {hasMore ? (
+          <div className="text-gray-400">Chargement en cours...</div>
+        ) : (
+          <div className="text-gray-500">Toutes les photos sont chargées.</div>
+        )}
       </div>
 
       {/* Lightbox */}
@@ -200,16 +236,14 @@ export default function Photos() {
               exit={{ scale: 0.9 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Conteneur avec hauteur maximale basée sur la vue (viewport) */}
               <div className="relative w-full" style={{ maxHeight: "80vh" }}>
                 <img
-                  src={`${selectedPhoto.filename}`}
+                  src={selectedPhoto.filename}
                   alt={selectedPhoto.title}
                   className="w-full h-full object-contain max-h-[70vh]"
                 />
               </div>
 
-              {/* Métadonnées avec défilement si nécessaire */}
               <div className="text-white mt-4 text-center max-h-[20vh] overflow-y-auto px-4">
                 <h2 className="text-xl font-semibold">{selectedPhoto.title}</h2>
                 <div className="space-y-1 mt-2">
@@ -251,7 +285,6 @@ export default function Photos() {
               <FiChevronRight size={32} />
             </button>
 
-            {/* Indicateurs */}
             <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
               {photos.map((_, index) => (
                 <div

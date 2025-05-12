@@ -26,7 +26,7 @@ export const savePhoto = async ({
   return photo;
 };
 
-export const getAllPhotos = async () => {
+export const getPhotosPaginated = async (limit, offset) => {
   const res = await pool.query(`
     SELECT
       p.id,
@@ -34,12 +34,16 @@ export const getAllPhotos = async () => {
       p.filename,
       p.took_at,
       p.location,
-      json_agg(pc.name) AS categories
+      COALESCE(json_agg(pc.name) FILTER (WHERE pc.name IS NOT NULL), '[]') AS categories
     FROM photos p
     LEFT JOIN photo_category_links pcl ON p.id = pcl.photo_id
     LEFT JOIN photo_categories pc ON pcl.category_id = pc.id
     GROUP BY p.id
     ORDER BY p.took_at DESC
-  `);
+    LIMIT $1 OFFSET $2
+  `, [limit, offset]);
+
   return res.rows;
 };
+
+

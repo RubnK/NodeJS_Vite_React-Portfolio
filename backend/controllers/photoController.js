@@ -1,7 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
-import { savePhoto, getAllPhotos } from "../models/photoModel.js";
-import e from "express";
+import { savePhoto, getPhotosPaginated } from "../models/photoModel.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD,
@@ -46,6 +45,16 @@ export const uploadPhoto = async (req, res) => {
 };
 
 export const getPhotos = async (req, res) => {
-  const photos = await getAllPhotos();
-  res.json(photos);
+  try {
+    const limit = parseInt(req.query.limit) || 6;
+    const offset = parseInt(req.query.offset) || 0;
+
+    console.log("Pagination => limit:", limit, "offset:", offset);
+
+    const photos = await getPhotosPaginated(limit, offset);
+    res.json(photos);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur lors du chargement des photos" });
+  }
 };
