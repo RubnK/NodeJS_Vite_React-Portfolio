@@ -52,18 +52,6 @@ export default function Footer() {
           ))}
         </div>
       </motion.div>
-
-      <motion.div 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-800 text-center"
-      >
-        <p className="text-xs text-gray-500">
-          Conçu et développé avec ❤️ par RubnK
-        </p>
-      </motion.div>
     </footer>
   );
 }

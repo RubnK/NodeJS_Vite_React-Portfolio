@@ -4,7 +4,6 @@ import stackColors from "../utils/stackColors";
 import { useEffect } from "react";
 import {
   FiMail,
-  FiPhone,
   FiMapPin,
   FiLinkedin,
   FiGithub,
@@ -90,10 +89,6 @@ const Cv = () => {
                   >
                     {cv.contact.email}
                   </a>
-                </li>
-                <li className="flex items-center">
-                  <FiPhone className="mr-3 text-blue-400" />
-                  {cv.contact.phone}
                 </li>
                 <li className="flex items-center">
                   <FiLinkedin className="mr-3 text-blue-400" />

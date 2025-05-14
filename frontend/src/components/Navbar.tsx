@@ -28,18 +28,18 @@ const Navbar = () => {
           >
             <NavLink 
               to="/" 
-              className="text-xl font-bold flex items-center"
+              className="text-2xl font-bold flex items-center"
             >
               <motion.span
-                initial={{ backgroundImage: 'linear-gradient(to right, #3B82F6, #EC4899)' }}
-                whileHover={{
-                  backgroundImage: 'linear-gradient(to right, #EC4899, #3B82F6)',
-                  scale: 1.1
-                }}
-                transition={{ duration: 0.4 }}
-                className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-pink-500"
+              initial={{ backgroundImage: 'linear-gradient(to right, #3B82F6, #EC4899)' }}
+              whileHover={{
+                backgroundImage: 'linear-gradient(to right, #EC4899, #3B82F6)',
+                scale: 1.1
+              }}
+              transition={{ duration: 0.4 }}
+              className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-pink-500"
               >
-                Ruben
+              Ruben
               </motion.span>
             </NavLink>
           </motion.div>
