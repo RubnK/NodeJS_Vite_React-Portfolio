@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants, type Transition } from "framer-motion";
 import type { Project } from "../types/Project";
 import stackColors from "../utils/stackColors";
 import truncateWords from "../utils/truncateWords";
 
 type ProjectWithImage = Project & { preview?: string };
 
-const containerVariants = {
+const spring: Transition = { type: "spring", stiffness: 300, damping: 20 };
+
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -18,17 +20,9 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20,
-    },
-  },
+  show: { opacity: 1, y: 0, transition: spring },
 };
 
 export default function Projects() {
@@ -133,7 +127,7 @@ export default function Projects() {
               variants={itemVariants}
               whileHover={{
                 y: -8,
-                transition: { type: "spring", stiffness: 400 },
+                transition: { type: "spring", stiffness: 400 } as Transition,
               }}
               className="group"
             >
