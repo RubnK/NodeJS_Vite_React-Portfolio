@@ -27,6 +27,7 @@ import photoRoutes from "./routes/photos.js";
 import projectImageRoutes from "./routes/projectImages.js";
 import categoryRoutes from "./routes/categories.js";
 import adminRoutes from "./routes/admin.js";
+import imageRoutes from "./routes/images.js";
 
 
 dotenv.config();
@@ -41,6 +42,7 @@ app.use("/contact", contactRoutes);
 app.use("/photos", photoRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/admin", adminRoutes);
+app.use("/images", imageRoutes);
 
 // Servir les fichiers statiques d'images
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

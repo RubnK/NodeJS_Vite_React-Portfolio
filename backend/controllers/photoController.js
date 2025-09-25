@@ -1,12 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
-import streamifier from "streamifier";
 import { savePhoto, getPhotosPaginated } from "../models/photoModel.js";
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET
-});
+import { saveImageLocally, deleteImageLocally } from "../utils/imageStorage.js";
 
 export const uploadPhoto = async (req, res) => {
   try {
@@ -17,30 +10,25 @@ export const uploadPhoto = async (req, res) => {
         ? JSON.parse(categoryIds)
         : [];
 
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: "photos" },
-      async (error, result) => {
-        if (error) {
-          console.error(error);
-          return res.status(500).json({ error: "Erreur d'upload Cloudinary", error });
-        }
-
-        const photo = await savePhoto({
-          title,
-          location,
-          took_at,
-          filename: result.secure_url,
-          categoryIds: parsedCategories
-        });
-
-        res.status(201).json(photo);
-      }
+    // Sauvegarder l'image localement avec un ID unique
+    const imageInfo = await saveImageLocally(
+      req.file.buffer,
+      req.file.originalname,
+      'photos'
     );
 
-    streamifier.createReadStream(req.file.buffer).pipe(stream);
+    const photo = await savePhoto({
+      title,
+      location,
+      took_at,
+      image_url: imageInfo.url,
+      categoryIds: parsedCategories
+    });
+
+    res.status(201).json(photo);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Erreur interne" });
+    res.status(500).json({ error: "Erreur interne: " + err.message });
   }
 };
 

@@ -6,14 +6,7 @@ import {
   deleteProject,
 } from "../models/projectModel.js";
 import { saveProjectImage } from "../models/projectImageModel.js";
-import { v2 as cloudinary } from "cloudinary";
-import streamifier from "streamifier";
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
-});
+import { saveImageLocally, deleteImageLocally } from "../utils/imageStorage.js";
 
 export const getProjects = async (req, res) => {
   const limit = parseInt(req.query.limit) || 6;
@@ -54,23 +47,16 @@ export const addProject = async (req, res) => {
   try {
     const { title, description, stack, link } = req.body;
 
-    const imageUrls = [];
+    const imageInfos = [];
 
+    // Sauvegarder chaque image localement avec un ID unique
     for (const file of req.files) {
-      const streamUpload = () =>
-        new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { folder: "projects" },
-            (err, result) => {
-              if (err) return reject(err);
-              resolve(result.secure_url);
-            }
-          );
-          streamifier.createReadStream(file.buffer).pipe(stream);
-        });
-
-      const imageUrl = await streamUpload();
-      imageUrls.push(imageUrl);
+      const imageInfo = await saveImageLocally(
+        file.buffer,
+        file.originalname,
+        'projects'
+      );
+      imageInfos.push(imageInfo);
     }
 
     const parsedStack =
@@ -78,11 +64,15 @@ export const addProject = async (req, res) => {
 
     const project = await createProject(title, description, link, parsedStack);
 
-    for (const url of imageUrls) {
-      await saveProjectImage(project.id, url);
+    // Sauvegarder les informations des images dans la base de données
+    for (const imageInfo of imageInfos) {
+      await saveProjectImage(project.id, imageInfo.url);
     }
 
-    res.status(201).json(project);
+    res.status(201).json({
+      ...project,
+      images: imageInfos.map(img => ({ url: img.url }))
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erreur ajout projet : " + err.message });

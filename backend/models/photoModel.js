@@ -4,13 +4,13 @@ export const savePhoto = async ({
   title,
   location,
   took_at,
-  filename,
+  image_url,
   categoryIds = [],
 }) => {
   const res = await pool.query(
-    `INSERT INTO photos (title, location, took_at, filename)
+    `INSERT INTO photos (title, location, took_at, image_url)
      VALUES ($1, $2, $3, $4) RETURNING *`,
-    [title, location, took_at, filename]
+    [title, location, took_at, image_url]
   );
 
   const photo = res.rows[0];

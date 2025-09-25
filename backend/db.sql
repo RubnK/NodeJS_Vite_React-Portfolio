@@ -25,7 +25,7 @@ CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
   description TEXT,
-  filename TEXT NOT NULL,
+  image_url VARCHAR(500) NOT NULL,
   location VARCHAR(100),
   category_id INTEGER REFERENCES photo_categories(id) ON DELETE SET NULL,
   took_at TIMESTAMP
@@ -34,7 +34,7 @@ CREATE TABLE photos (
 CREATE TABLE project_images (
   id SERIAL PRIMARY KEY,
   project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
-  filename TEXT NOT NULL,
+  image_url VARCHAR(500) NOT NULL,
   title VARCHAR(100),
   uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
