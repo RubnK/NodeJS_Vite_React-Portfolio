@@ -86,6 +86,7 @@ export default function AdminPanel() {
       form.elements.namedItem("description") as HTMLTextAreaElement
     ).value;
     const stack = (form.elements.namedItem("stack") as HTMLInputElement).value;
+    const repo = (form.elements.namedItem("repo") as HTMLInputElement).value;
     const link = (form.elements.namedItem("link") as HTMLInputElement).value;
     const images = (form.elements.namedItem("images") as HTMLInputElement)
       .files;
@@ -93,6 +94,7 @@ export default function AdminPanel() {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("stack", stack);
+    formData.append("repo", repo);
     formData.append("link", link);
 
     if (images) {
@@ -321,7 +323,13 @@ export default function AdminPanel() {
                   />
                   <input
                     type="url"
-                    placeholder="Lien (optionnel)"
+                    placeholder="Repository GitHub (optionnel)"
+                    className="w-full border px-4 py-2 rounded"
+                    name="repo"
+                  />
+                  <input
+                    type="url"
+                    placeholder="Lien de démonstration (optionnel)"
                     className="w-full border px-4 py-2 rounded"
                     name="link"
                   />

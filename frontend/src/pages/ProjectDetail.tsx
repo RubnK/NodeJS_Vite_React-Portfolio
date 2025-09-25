@@ -7,6 +7,7 @@ import {
   FiX,
   FiChevronLeft,
   FiChevronRight,
+  FiLink,
 } from "react-icons/fi";
 import type { Project } from "../types/Project";
 import stackColors from "../utils/stackColors";
@@ -170,7 +171,7 @@ export default function ProjectDetail() {
 
         {/* Liens et métadonnées */}
         <div>
-          {project.link && (
+          {(project.repo || project.link) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -179,16 +180,32 @@ export default function ProjectDetail() {
               <h2 className="text-2xl font-semibold mb-4 text-cyan-400">
                 Liens
               </h2>
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors text-cyan-400"
-              >
-                <FiGithub className="text-lg" />
-                Voir sur GitHub
-                <FiExternalLink className="ml-1 text-sm" />
-              </a>
+              <div className="flex flex-wrap gap-3">
+                {project.repo && (
+                  <a
+                    href={project.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors text-cyan-400"
+                  >
+                    <FiGithub className="text-lg" />
+                    Voir sur GitHub
+                    <FiExternalLink className="ml-1 text-sm" />
+                  </a>
+                )}
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors text-white"
+                  >
+                    <FiLink className="text-lg" />
+                    Démonstration
+                    <FiExternalLink className="ml-1 text-sm" />
+                  </a>
+                )}
+              </div>
             </motion.div>
           )}
         </div>

@@ -45,7 +45,7 @@ export const getProject = async (req, res) => {
 
 export const addProject = async (req, res) => {
   try {
-    const { title, description, stack, link } = req.body;
+    const { title, description, stack, repo, link } = req.body;
 
     const imageInfos = [];
 
@@ -62,7 +62,7 @@ export const addProject = async (req, res) => {
     const parsedStack =
       typeof stack === "string" ? stack.split(",").map((s) => s.trim()) : stack;
 
-    const project = await createProject(title, description, link, parsedStack);
+    const project = await createProject(title, description, repo, link, parsedStack);
 
     // Sauvegarder les informations des images dans la base de données
     for (const imageInfo of imageInfos) {
@@ -88,11 +88,12 @@ export const editProject = async (req, res) => {
       return res.status(400).json({ error: "ID invalide" });
     }
 
-    const { title, description, link, stack } = req.body;
+    const { title, description, repo, link, stack } = req.body;
     const data = await updateProject(
       id,
       title,
       description,
+      repo,
       link,
       stack || []
     );
