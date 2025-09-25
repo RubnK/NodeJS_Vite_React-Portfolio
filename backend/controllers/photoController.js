@@ -49,7 +49,10 @@ export const getPhotos = async (req, res) => {
     const limit = parseInt(req.query.limit) || 6;
     const offset = parseInt(req.query.offset) || 0;
 
-    console.log("Pagination => limit:", limit, "offset:", offset);
+    // Log seulement si c'est différent de la pagination par défaut ou en mode debug
+    if (process.env.NODE_ENV === 'development' && (limit !== 6 || offset !== 0)) {
+      console.log("Pagination => limit:", limit, "offset:", offset);
+    }
 
     const photos = await getPhotosPaginated(limit, offset);
     res.json(photos);

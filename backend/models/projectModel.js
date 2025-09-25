@@ -14,11 +14,27 @@ export const getProjectById = async (id) => {
 };
 
 export const createProject = async (title, description, link, stack) => {
-  const res = await pool.query(
-    "INSERT INTO projects (title, description, link, stack) VALUES ($1, $2, $3, $4) RETURNING *",
-    [title, description, link, stack]
-  );
-  return res.rows[0];
+  try {
+    const res = await pool.query(
+      "INSERT INTO projects (title, description, link, stack) VALUES ($1, $2, $3, $4) RETURNING *",
+      [title, description, link, stack]
+    );
+    return res.rows[0];
+  } catch (error) {
+    // Si erreur de clé dupliquée, on peut essayer avec un ID spécifique
+    if (error.code === '23505') {
+      // Récupérer le prochain ID disponible
+      const maxIdRes = await pool.query("SELECT COALESCE(MAX(id), 0) + 1 as next_id FROM projects");
+      const nextId = maxIdRes.rows[0].next_id;
+      
+      const res = await pool.query(
+        "INSERT INTO projects (id, title, description, link, stack) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [nextId, title, description, link, stack]
+      );
+      return res.rows[0];
+    }
+    throw error;
+  }
 };
 
 export const updateProject = async (id, title, description, link, stack) => {

@@ -20,6 +20,11 @@ export const getProjects = async (req, res) => {
   const offset = parseInt(req.query.offset) || 0;
 
   try {
+    // Log seulement en mode debug et si pagination non-standard
+    if (process.env.NODE_ENV === 'development' && (limit !== 6 || offset !== 0)) {
+      console.log("Projects pagination => limit:", limit, "offset:", offset);
+    }
+
     const data = await getAllProjects(limit, offset);
     res.json(data);
   } catch (err) {
@@ -29,8 +34,20 @@ export const getProjects = async (req, res) => {
 };
 
 export const getProject = async (req, res) => {
-  const data = await getProjectById(req.params.id);
-  data ? res.json(data) : res.status(404).json({ error: "Projet non trouvé" });
+  try {
+    const id = parseInt(req.params.id);
+    
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return res.status(400).json({ error: "ID invalide" });
+    }
+
+    const data = await getProjectById(id);
+    data ? res.json(data) : res.status(404).json({ error: "Projet non trouvé" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur récupération projet" });
+  }
 };
 
 export const addProject = async (req, res) => {
@@ -73,18 +90,52 @@ export const addProject = async (req, res) => {
 };
 
 export const editProject = async (req, res) => {
-  const { title, description, link, stack } = req.body;
-  const data = await updateProject(
-    req.params.id,
-    title,
-    description,
-    link,
-    stack || []
-  );
-  res.json(data);
+  try {
+    const id = parseInt(req.params.id);
+    
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return res.status(400).json({ error: "ID invalide" });
+    }
+
+    const { title, description, link, stack } = req.body;
+    const data = await updateProject(
+      id,
+      title,
+      description,
+      link,
+      stack || []
+    );
+    
+    if (!data) {
+      return res.status(404).json({ error: "Projet non trouvé" });
+    }
+    
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur mise à jour projet" });
+  }
 };
 
 export const removeProject = async (req, res) => {
-  const data = await deleteProject(req.params.id);
-  res.json(data);
+  try {
+    const id = parseInt(req.params.id);
+    
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return res.status(400).json({ error: "ID invalide" });
+    }
+
+    const data = await deleteProject(id);
+    
+    if (!data) {
+      return res.status(404).json({ error: "Projet non trouvé" });
+    }
+    
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur suppression projet" });
+  }
 };
