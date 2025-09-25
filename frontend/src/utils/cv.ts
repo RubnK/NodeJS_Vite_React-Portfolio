@@ -97,6 +97,12 @@ export const cv = {
 
   certifications: [
     {
+      title: "Generative AI Basics",
+      issuer: "EFREI",
+      issued: "septembre 2025",
+      skills: ["Intelligence Artificielle"],
+    },
+    {
       title: "Collaborer grâce à Microsoft 365",
       issuer: "Microsoft / LinkedIn",
       issued: "mai 2025",
