@@ -13,8 +13,8 @@ export const cv = {
   },
 
   skills: {
-    frontend: ["HTML", "CSS", "JavaScript", "Three.JS", "Alpine.JS", "Vue", "React", "TypeScript", "Tailwind CSS", "Vite"],
-    backend: ["PHP", "Symfony", "Composer", "Node.JS", "API REST"],
+    frontend: ["HTML", "CSS", "JavaScript", "Three.js", "Alpine.js", "Vue", "React", "TypeScript", "Tailwind CSS", "Vite"],
+    backend: ["PHP", "Symfony", "Composer", "Node.js", "API REST"],
     database: ["MySQL", "PostgreSQL", "MongoDB"],
     software: ["Python", "C", "Shell", "Java", "Android"],
     infra: ["Apache", "UNIX"],
@@ -37,7 +37,7 @@ export const cv = {
       school: "EFREI - Villejuif",
       years: "2023 - 2026",
       details: [
-        "Apprentissage du UNIX, JavaScript, PHP, PostgreSQL, Symfony, Three.JS, Alpine.JS, Node.JS, Vue.JS, OWASP, MongoDB, Java & Kotlin",
+        "Apprentissage du UNIX, JavaScript, PHP, PostgreSQL, Symfony, Three.js, Alpine.js, Node.js, Vue.js, OWASP, MongoDB, Java & Kotlin",
         "Challenge Web : création d'un site web en MVC en une semaine",
         "Utilisation d'outils comme Trello et Git",
         "TOEIC : 945 points",
