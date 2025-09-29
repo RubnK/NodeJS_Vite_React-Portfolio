@@ -1,5 +1,3 @@
-import React from "react";
-
 const stackColors: Record<string, string> = {
   "React.js": "#61dafb",
   "React": "#61dafb",
