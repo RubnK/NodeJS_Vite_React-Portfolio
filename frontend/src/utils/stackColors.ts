@@ -1,5 +1,8 @@
+import React from "react";
+
 const stackColors: Record<string, string> = {
-  React: "#61dafb",
+  "React.js": "#61dafb",
+  "React": "#61dafb",
   "Node.js": "#73a760",
   PostgreSQL: "#376695",
   TypeScript: "#377cc8",
