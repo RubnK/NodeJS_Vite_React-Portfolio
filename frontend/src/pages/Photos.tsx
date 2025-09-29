@@ -5,7 +5,7 @@ import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 type Photo = {
   id: number;
   title: string;
-  filename: string;
+  image_url: string;
   location?: string;
   took_at?: string;
   categories: string[];
@@ -164,7 +164,7 @@ export default function Photos() {
             >
               <div className="relative w-full pb-[66.666%] transition-transform duration-500 group-hover:scale-105">
                 <img
-                  src={photo.filename}
+                  src={photo.image_url}
                   alt={photo.title}
                   className="absolute top-0 left-0 w-full h-full object-cover"
                   loading="lazy"
@@ -254,7 +254,7 @@ export default function Photos() {
             >
               <div className="relative w-full" style={{ maxHeight: "80vh" }}>
                 <img
-                  src={selectedPhoto.filename}
+                  src={selectedPhoto.image_url}
                   alt={selectedPhoto.title}
                   className="w-full h-full object-contain max-h-[70vh]"
                 />

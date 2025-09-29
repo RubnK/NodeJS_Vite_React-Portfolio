@@ -14,7 +14,7 @@ export default function Home() {
       })
       .then((data) => {
         if (Array.isArray(data)) {
-          const thumbs = data.slice(0, 3).map((p: any) => p.image_url || p.filename);
+          const thumbs = data.slice(0, 3).map((p: any) => p.image_url);
           setThumbnails(thumbs);
         }
       })
