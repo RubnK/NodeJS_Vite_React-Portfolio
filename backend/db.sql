@@ -3,6 +3,7 @@ CREATE TABLE projects (
   title VARCHAR(100) NOT NULL,
   description TEXT,
   stack TEXT[],
+  repo TEXT,
   link TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -44,3 +45,15 @@ CREATE TABLE photo_category_links (
   category_id INTEGER REFERENCES photo_categories(id) ON DELETE CASCADE,
   PRIMARY KEY (photo_id, category_id)
 );
+
+INSERT INTO photo_categories (name) VALUES
+('Animaux'),
+('Architecture'),
+('Ciel'),
+('Detail'),
+('Monument'),
+('Nature'),
+('Noir et Blanc'),
+('Paysage'),
+('Portrait'),
+('Urbain');

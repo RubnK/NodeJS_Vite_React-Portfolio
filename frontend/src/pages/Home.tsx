@@ -8,10 +8,15 @@ export default function Home() {
 
   useEffect(() => {
     fetch("https://api.rubnk.com/photos")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
-        const thumbs = data.slice(0, 3).map((p: any) => `${p.filename}`);
-        setThumbnails(thumbs);
+        if (Array.isArray(data)) {
+          const thumbs = data.slice(0, 3).map((p: any) => p.image_url || p.filename);
+          setThumbnails(thumbs);
+        }
       })
       .catch(console.error);
   }, []);

@@ -31,7 +31,7 @@ export const getPhotosPaginated = async (limit, offset) => {
     SELECT
       p.id,
       p.title,
-      p.filename,
+      p.image_url,
       p.took_at,
       p.location,
       COALESCE(json_agg(pc.name) FILTER (WHERE pc.name IS NOT NULL), '[]') AS categories

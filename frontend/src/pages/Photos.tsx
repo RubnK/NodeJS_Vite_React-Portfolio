@@ -35,12 +35,24 @@ export default function Photos() {
           pageRef.current * limit
         }`
       );
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      
+      // Vérifier que data est bien un tableau
+      if (!Array.isArray(data)) {
+        console.error('API response is not an array:', data);
+        return;
+      }
+      
       if (data.length < limit) setHasMore(false);
       setPhotos((prev) => [...prev, ...data]);
       pageRef.current += 1;
     } catch (e) {
-      console.error(e);
+      console.error('Error fetching photos:', e);
     } finally {
       setLoading(false);
       isFetchingRef.current = false;
