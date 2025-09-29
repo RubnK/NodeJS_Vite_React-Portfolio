@@ -55,7 +55,7 @@ export default function Projects() {
               `https://api.rubnk.com/projects/${project.id}/images`
             );
             const images = await res.json();
-            const preview = images.length ? images[0].filename : undefined;
+            const preview = images.length ? images[0].image_url : undefined;
             return { ...project, preview };
           } catch {
             return { ...project };
